@@ -9,16 +9,16 @@
 
     <div class="flex flex-col gap-2">
       <p class="text-3xl self-end">
-        {{ Math.round(city.weather.main.temp) }}&deg;
+        {{ convertTemperature(city.weather.main.temp) }}&deg;
       </p>
       <div class="flex gap-2">
         <span class="text-xs">
           H:
-          {{ Math.round(city.weather.main.temp_max) }}&deg;
+          {{ convertTemperature(city.weather.main.temp_max) }}&deg;
         </span>
         <span class="text-xs">
           L:
-          {{ Math.round(city.weather.main.temp_min) }}&deg;
+          {{ convertTemperature(city.weather.main.temp_min) }}&deg;
         </span>
       </div>
     </div>
@@ -26,6 +26,10 @@
 </template>
 
 <script setup>
+
+const convertTemperature = (temperature) => {
+  return Math.round((temperature - 32) * (5 / 9));
+};
 
 defineProps({
   city: {

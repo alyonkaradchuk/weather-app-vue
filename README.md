@@ -1,3 +1,6 @@
+# Demo 
+Click [here](https://alyonkaradchuk.github.io/weather-app-vue/) to see the demonstration.
+
 # vue-project
 
 This template should help get you started developing with Vue 3 in Vite.

@@ -5,18 +5,18 @@
     >
       <RouterLink :to="{ name: 'home' }">
         <div class="flex items-center gap-3">
-          <i class="fa-solid fa-sun text-2xl"></i>
-          <p class="text-2xl">The Local Weather</p>
+          <i class="fa-solid fa-sun text-2xl text-yellow-300"></i>
+          <p class="text-2xl text-yellow-300">Your Local Forecast</p>
         </div>
       </RouterLink>
 
       <div class="flex gap-3 flex-1 justify-end">
         <i
-          class="fa-solid fa-circle-info text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+          class="fa-solid fa-circle-info text-xl hover:text-weather-secondary duration-150 cursor-pointer text-yellow-300"
           @click="toggleModal"
         ></i>
         <i
-          class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+          class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer text-yellow-300"
           @click="addCity"
           v-if="route.query"
         ></i>
@@ -59,22 +59,31 @@
       </BasicModal>
     </nav>
   </header>
+  <div v-if="notificationActive && !isHomePage" class="text-white p-4 bg-weather-secondary w-full text-center">
+    <p>
+      City added successfully!
+    </p>
+  </div>
 </template>
 
 <script setup>
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import { uid } from "uid";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import BasicModal from "./BasicModal.vue";
 
 const savedCities = ref([]);
 const route = useRoute();
 const router = useRouter();
+
+const notificationActive = ref(false);
+const notificationMessage = ref("");
+
+const isHomePage = computed(() => route.name === "home");
+
 const addCity = () => {
   if (localStorage.getItem("savedCities")) {
-    savedCities.value = JSON.parse(
-      localStorage.getItem("savedCities")
-    );
+    savedCities.value = JSON.parse(localStorage.getItem("savedCities"));
   }
 
   const locationObj = {
@@ -88,15 +97,24 @@ const addCity = () => {
   };
 
   savedCities.value.push(locationObj);
-  localStorage.setItem(
-    "savedCities",
-    JSON.stringify(savedCities.value)
-  );
+  localStorage.setItem("savedCities", JSON.stringify(savedCities.value));
 
   let query = Object.assign({}, route.query);
   delete query.preview;
   query.id = locationObj.id;
   router.replace({ query });
+  toggleNotification("City added successfully!");
+};
+
+const toggleNotification = (message) => {
+  notificationMessage.value = message;
+  notificationActive.value = true;
+
+  setTimeout(() => {
+    notificationActive.value = false;
+    notificationMessage.value = "";
+    router.push({ name: "home" });
+  }, 2000);
 };
 
 const modalActive = ref(null);

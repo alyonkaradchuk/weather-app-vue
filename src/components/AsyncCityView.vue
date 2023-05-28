@@ -125,6 +125,7 @@
     </div>
 
     <div
+      v-if="isCitySaved(route.query.id)"
       class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
       @click="removeCity"
     >
@@ -159,6 +160,8 @@ const getWeatherData = async () => {
         utc + 1000 * weatherData.data.timezone_offset;
     });
 
+    await new Promise((res) => setTimeout(res, 1000));
+
     return weatherData.data;
   } catch (err) {
     console.log(err);
@@ -170,6 +173,11 @@ const router = useRouter();
 
 const convertTemperature = (temperature) => {
   return Math.round((temperature - 32) * (5 / 9));
+};
+
+const isCitySaved = (cityId) => {
+  const cities = JSON.parse(localStorage.getItem("savedCities"));
+  return cities !== null && cities.some((city) => city.id === cityId);
 };
 
 const removeCity = () => {

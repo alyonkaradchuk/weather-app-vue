@@ -16,7 +16,7 @@ html, body {
 .ocean {
   height: 80px;
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
