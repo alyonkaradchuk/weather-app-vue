@@ -1,5 +1,5 @@
 # Demo 
-Click [here](https://alyonkaradchuk.github.io/weather-app-vue/) to see the demonstration.
+Click [here](https://symphonious-axolotl-261f97.netlify.app) to see the demonstration.
 
 # vue-project
 
